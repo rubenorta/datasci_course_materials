@@ -5,7 +5,11 @@ import re
 
 def calculate_frequency(text,index):
     try:
-    	  words = str.split(str(text))
+    	  #if re.match("Robsten",text):
+    	  #	  print "[!] ",
+    	  #	  print text
+    	  #words = re.findall("[^\s]+", text)
+    	  words = text.encode("utf-8").split()
     	  for word in words:
     	  	  if word in index:
     	  	  	  index[word] = index[word] + 1
@@ -29,7 +33,6 @@ def process_tweets(file):
     	if term != 'error_tweets' and term != 'correct_words':
     		frequency = float(index[term]) / float(index['correct_words'])
     		print "%s %s" % (term,str(frequency))
-
     #print index
     #print "OK Tweets %s ERROR Tweets %s" % (index['correct_words'],index['error_tweets'])
 
