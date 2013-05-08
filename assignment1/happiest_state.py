@@ -35,11 +35,16 @@ def get_state(tweet):
     return state_code
 
 def process_tweets(file,index):
+
     i = 0
     ranking = {}
     for line in file:
-    	tweet = json.loads(line)
-    	if not 'delete' in tweet:
+    	try:
+            tweet = json.loads(line)
+        except:
+            tweet['delete'] = 1 	
+        
+        if not 'delete' in tweet:
             state_code = get_state(tweet)
             if state_code != '':
                 sentiment = get_sentiment(tweet,index)
@@ -49,9 +54,9 @@ def process_tweets(file,index):
                 else:
                     ranking[state_code] = sentiment
                     #print "N %s %s" % (state_code,ranking[state_code])
-
-    sort_ranking = sorted(ranking.iteritems(), key= operator.itemgetter(1))
-    print sort_ranking[len(sort_ranking)-1][0]
+    sort_ranking = sorted(ranking.iteritems(), key= operator.itemgetter(1), reverse=True)
+    state = sort_ranking[0]
+    print state[0]
 
 def main():
     sent_file = open(sys.argv[1])
