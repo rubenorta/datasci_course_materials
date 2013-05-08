@@ -1,25 +1,28 @@
 import sys
 import json
 import operator
+from collections import defaultdict
 
 def process_tweets(file):
 
-    ranking = {}
+    ranking = defaultdict(int)
+
     for line in file:
     	tweet = json.loads(line)
     	if not 'delete' in tweet:
           entities = tweet['entities'] 
           if 'hashtags' in entities:
               if entities['hashtags']:
-                  hs =  entities['hashtags'][0]
-                  text = hs['text'].lower()
-                  if text in ranking:
-                      ranking[text] += 1
-                  else:
-                      ranking[text] = 1  
-    sort_ranking = sorted(ranking.iteritems(), key= operator.itemgetter(1), reverse=True)
+              	  for hashtag in entities['hashtags']:
+                      text = hashtag['text'].lower()
+                      ranking[text] +=1
+    sort_ranking = sorted(ranking.iteritems(), key= lambda x: x[1], reverse=True) 
     for pos in range(0,10):
-        print "%s %s" % (sort_ranking[pos][0],sort_ranking[pos][1])
+        #output = "{0}\t{1}" .format(sort_ranking[pos][0],sort_ranking[pos][1])
+        #print output.encode('utf-8')
+        word = sort_ranking[pos][0]
+        number = float(sort_ranking[pos][1])
+        print "%s\t%s" % (word,str(number))
 
 def main():
     tweet_file = open(sys.argv[1])
