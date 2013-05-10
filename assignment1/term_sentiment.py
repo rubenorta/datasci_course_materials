@@ -56,15 +56,15 @@ def calculate_sentiment(text,index):
 
         for word in words:
 
-            word = clean_word(word)            
-            if good_word(word):
-                try: 
-                    total = total + int(index[word])
-                    my_words.append(word)
-                except KeyError:
-                    my_bad_words.append(word)
-                except ValueError:
-                    my_bad_words.append(word)
+            #word = clean_word(word)            
+            #if good_word(word):
+            try: 
+                total = total + int(index[word])
+                my_words.append(word)
+            except KeyError:
+                my_bad_words.append(word)
+            except ValueError:
+                my_bad_words.append(word)
     except UnicodeEncodeError:
         total = 0
 
